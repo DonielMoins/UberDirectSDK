@@ -133,11 +133,19 @@ export type Address = z.infer<typeof addressSchema>
 
 export const signatureProofSchema = z.object({
     image_url: z.string().describe('The url of the signature image.'),
-    signer_name: z.string().optional().describe('The name of the person who signed for the package.'),
+    name: z.string().optional().describe('The name of the person who signed for the package.'),
     signer_relationship: z.string().optional().describe('The relationship of the person who signed for the package to the intended recipient.'),
 })
 
 export type SignatureProof = z.infer<typeof signatureProofSchema>
+
+export const signatureProofWebhookSchema = z.object({
+    image_url: z.string().describe('The url of the signature image.'),
+    signer_name: z.string().optional().describe('The name of the person who signed for the package.'),
+    signer_relationship: z.string().optional().describe('The relationship of the person who signed for the package to the intended recipient.'),
+})
+
+export type signatureProofWebhook = z.infer<typeof signatureProofWebhookSchema>
 
 export const pictureProofSchema = z.object({
     image_url: z.string().describe('The url of the image taken at the waypoint.'),
@@ -337,6 +345,18 @@ export const verificationProofSchema = z.object({
 
 export type VerificationProof = z.infer<typeof verificationProofSchema>
 
+export const verificationProofWebhookSchema = z.object({
+    signature: signatureProofWebhookSchema.optional().describe('Signature information captured.'),
+    barcodes: z.array(barcodeRequirementSchema).optional().describe('Barcode values/types that were scanned.'),
+    picture: pictureProofSchema.optional().describe('Picture captured at the waypoint.'),
+    identification: identificationProofSchema.optional().describe('Identification information or scanning information captured.'),
+    pin_code: pincodeProofSchema.optional().describe('Pin entry data available after delivery completes.'),
+    completion_location: latLngSchema.optional().describe('The geographic location (Latitude, Longitude) where the job completes.'),
+})
+
+export type VerificationProofWebhook = z.infer<typeof verificationProofWebhookSchema>
+
+
 export const refundFeeSchema = z.object({
     fee_code: feeCodeSchema.describe('See the fee code string object.'),
     value: z.number().describe('The amount of the refund fee of the given category.'),
@@ -373,6 +393,24 @@ export const waypointInfoSchema = z.object({
 
 export type WaypointInfo = z.infer<typeof waypointInfoSchema>
 
+export const waypointInfoWebookSchema = z.object({
+    name: z.string().describe('Display name of the person/merchant at the waypoint.'),
+    phone_number: z.string().describe('The masked phone number of the waypoint.'),
+    address: z.string().describe('The address of the waypoint.'),
+    detailed_address: addressSchema.optional().describe('Structured address of the waypoint.'),
+    notes: z.string().optional().describe('Additional instructions at the waypoint location.'),
+    seller_notes: z.string().optional().describe('Delivery instructions provided by the seller for the courier at the waypoint location.'),
+    courier_notes: z.string().optional().describe('When a picture is requested as proof-of-delivery, this field contains the notes provided by the courier (e.g. where the items were left).'),
+    location: latLngSchema.describe('Geographic location (Latitude, Longitude) associated with the waypoint.'),
+    verification: verificationProofSchema.optional().describe('Details about different verifications that have/will occur at this waypoint and any associated proof.'),
+    verification_requirements: verificationRequirementSchema.optional().describe('Details about the verification steps that have/must be taken at this waypoint.'),
+    external_store_id: z.string().optional().describe('Unique identifier used by our Partners to reference a Store or Location.'),
+    status: z.enum(['completed', 'failed']).describe('Delivery status in respect to the waypoint location'),
+    status_timestamp: z.string().datetime().describe('Timestamp of when the status was triggered'),
+})
+
+export type WaypointWebhookInfo = z.infer<typeof waypointInfoWebookSchema>
+
 export const refundDataSchema = z.object({
     id: z.string().describe('Unique identifier of the refund request.'),
     created_at: z.number().describe('UTC Time i.e. 2023-03-15T04:14:15Z.'),
@@ -403,7 +441,7 @@ export const deliveryResponseSchema = z.object({
     courier_imminent: z.boolean().describe('Flag indicating if the courier is close to the pickup or dropoff location.'),
     created: z.string().describe('Date/Time at which the delivery was created.'),
     currency: z.string().describe('Three-letter ISO currency code, in lowercase.'),
-    dropoff: waypointInfoSchema.describe('Dropoff details.'),
+    dropoff: waypointInfoWebookSchema.describe('Dropoff details.'),
     dropoff_deadline: z.string().describe('When a delivery must be dropped off. This is the end of the dropoff window.'),
     dropoff_eta: z.string().describe('Estimated drop-off time.'),
     dropoff_identifier: z.string().optional().describe('This field identifies who received delivery at the dropoff location.'),

@@ -1,5 +1,17 @@
 # uber-direct-sdk
 
+## 1.6.0
+
+### Minor Changes
+
+- added Webhook version to signature proof and delivery response dropoff
+
+## 1.5.0
+
+### Minor Changes
+
+- eslint update and better less restrictive eslint
+
 ## 1.4.22
 
 ### Patch Changes
