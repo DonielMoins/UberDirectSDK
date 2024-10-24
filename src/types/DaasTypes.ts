@@ -134,7 +134,7 @@ export type Address = z.infer<typeof addressSchema>
 export const signatureProofSchema = z.object({
     image_url: z.string().describe('The url of the signature image.'),
     name: z.string().optional().describe('The name of the person who signed for the package.'),
-    signer_relationship: z.string().optional().describe('The relationship of the person who signed for the package to the intended recipient.'),
+    signer_relationship: z.enum(["SELF","INVALID","FRIEND","LEGAL_REPRESENTATIVE","PARENT_OR_GUARDIAN","SPOUSE"]).optional().describe('The relationship of the person who signed for the package to the intended recipient.'),
 })
 
 export type SignatureProof = z.infer<typeof signatureProofSchema>
@@ -142,7 +142,7 @@ export type SignatureProof = z.infer<typeof signatureProofSchema>
 export const signatureProofWebhookSchema = z.object({
     image_url: z.string().describe('The url of the signature image.'),
     signer_name: z.string().optional().describe('The name of the person who signed for the package.'),
-    signer_relationship: z.string().optional().describe('The relationship of the person who signed for the package to the intended recipient.'),
+    signer_relationship: z.enum(["SELF","INVALID","FRIEND","LEGAL_REPRESENTATIVE","PARENT_OR_GUARDIAN","SPOUSE"]).optional().describe('The relationship of the person who signed for the package to the intended recipient.'),
 })
 
 export type signatureProofWebhook = z.infer<typeof signatureProofWebhookSchema>
@@ -402,7 +402,7 @@ export const waypointInfoWebookSchema = z.object({
     seller_notes: z.string().optional().describe('Delivery instructions provided by the seller for the courier at the waypoint location.'),
     courier_notes: z.string().optional().describe('When a picture is requested as proof-of-delivery, this field contains the notes provided by the courier (e.g. where the items were left).'),
     location: latLngSchema.describe('Geographic location (Latitude, Longitude) associated with the waypoint.'),
-    verification: verificationProofSchema.optional().describe('Details about different verifications that have/will occur at this waypoint and any associated proof.'),
+    verification: verificationProofWebhookSchema.optional().describe('Details about different verifications that have/will occur at this waypoint and any associated proof.'),
     verification_requirements: verificationRequirementSchema.optional().describe('Details about the verification steps that have/must be taken at this waypoint.'),
     external_store_id: z.string().optional().describe('Unique identifier used by our Partners to reference a Store or Location.'),
     status: z.enum(['completed', 'failed']).describe('Delivery status in respect to the waypoint location'),

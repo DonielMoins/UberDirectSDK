@@ -1,5 +1,23 @@
 # uber-direct-sdk
 
+## 1.6.3
+
+### Patch Changes
+
+- add valid signer relationships in signature proof types
+
+## 1.6.2
+
+### Patch Changes
+
+- half-published
+
+## 1.6.1
+
+### Patch Changes
+
+- reflect the correct schema under yapointWebhook
+
 ## 1.6.0
 
 ### Minor Changes
