@@ -1,6 +1,6 @@
 {
   "name": "uber-direct-sdk",
-  "version": "1.4.21",
+  "version": "1.4.22",
   "description": "SDK for the Uber’s delivery APIs enable merchants to integrate their own apps & services with Uber Direct order delivery",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,7 @@
     "new-version": "changeset && npx changeset version && npm i",
     "tsup": "tsup --dts --format cjs,esm --external axios,jssha,zod",
     "publish": "npm run lint && npm run tsup && changeset publish",
-    "lint": "eslint --fix --ext .ts src example"
+    "lint": "eslint --fix -c eslint.config.mjs"
   },
   "keywords": [
     "SDK",
@@ -22,16 +22,19 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alexandreL/UberDirectSDK.git"
+    "url": "git+https://github.com/DonielMoins/UberDirectSDK.git"
   },
-  "website": "https://github.com/alexandreL/UberDirectSDK",
-  "author": "Alexandre Loubeyres",
+  "website": "https://github.com/DonielMoins/UberDirectSDK",
+  "author": "Alexandre Loubeyres, Daniel Hammami",
   "license": "ISC",
   "devDependencies": {
     "@changesets/cli": "^2.27.9",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.13.0",
     "@typescript-eslint/eslint-plugin": "^8.8.1",
     "@typescript-eslint/parser": "^8.8.1",
     "eslint": "^9.12.0",
+    "globals": "^15.11.0",
     "tsup": "^8.3.0",
     "type-fest": "^4.26.1",
     "typescript": "^5.6.3"

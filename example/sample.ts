@@ -41,7 +41,7 @@ async function run() {
 
     // webhook is executed without error but if tue type is wrong, it will only send a warning to the callback
     const result = uberDirectWebhook.verifyAndHandleWebhook(fakeBody, fakeHeaders)
-
+    return result
 }
 
 run()

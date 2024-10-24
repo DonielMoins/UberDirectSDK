@@ -1,5 +1,11 @@
 # uber-direct-sdk
 
+## 1.4.22
+
+### Patch Changes
+
+- Changes to schema and Axios
+
 ## 1.4.19
 
 ### Patch Changes
