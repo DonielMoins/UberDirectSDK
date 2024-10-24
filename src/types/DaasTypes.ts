@@ -83,9 +83,24 @@ export const signatureRequirementSchema = z.object({
 
 export type SignatureRequirement = z.infer<typeof signatureRequirementSchema>
 
+export const scanResultSchema = z.object({
+    outcome: z.enum(['SUCCESS', 'FAILED', 'INVALID']).describe('The outcome of the scan.'),
+    timestamp: z.string().datetime().describe('The timestamp of the scan.'),
+})
+
+export type ScanResult = z.infer<typeof scanResultSchema>
+
+export const barcodeScanRequirementSchema = z.object({
+    value: z.string().describe('String value encoded in the barcode.'),
+    type: z.string().describe('Type of barcode. Valid values: “CODE39”, “CODE39_FULL_ASCII”, “CODE128”, “QR”.'),
+    scan_result: scanResultSchema.describe('The result of the scan.'),
+})
+export type BarcodeScanRequirement = z.infer<typeof barcodeScanRequirementSchema>
+
 export const barcodeRequirementSchema = z.object({
     value: z.string().describe('String value encoded in the barcode.'),
     type: z.string().describe('Type of barcode. Valid values: “CODE39”, “CODE39_FULL_ASCII”, “CODE128”, “QR”.'),
+    scan_result: scanResultSchema.describe('The result of the scan.'),
 })
 export type BarcodeRequirement = z.infer<typeof barcodeRequirementSchema>
 
@@ -346,12 +361,12 @@ export const verificationProofSchema = z.object({
 export type VerificationProof = z.infer<typeof verificationProofSchema>
 
 export const verificationProofWebhookSchema = z.object({
-    signature: signatureProofWebhookSchema.optional().describe('Signature information captured.'),
-    barcodes: z.array(barcodeRequirementSchema).optional().describe('Barcode values/types that were scanned.'),
-    picture: pictureProofSchema.optional().describe('Picture captured at the waypoint.'),
-    identification: identificationProofSchema.optional().describe('Identification information or scanning information captured.'),
-    pin_code: pincodeProofSchema.optional().describe('Pin entry data available after delivery completes.'),
-    completion_location: latLngSchema.optional().describe('The geographic location (Latitude, Longitude) where the job completes.'),
+    signature: signatureProofWebhookSchema.describe('Signature information captured.'),
+    barcodes: z.array(barcodeScanRequirementSchema).describe('Barcode values/types that were scanned.'),
+    picture: pictureProofSchema.describe('Picture captured at the waypoint.'),
+    identification: identificationProofSchema.describe('Identification information or scanning information captured.'),
+    pin_code: pincodeProofSchema.describe('Pin entry data available after delivery completes.'),
+    completion_location: latLngSchema.describe('The geographic location (Latitude, Longitude) where the job completes.'),
 })
 
 export type VerificationProofWebhook = z.infer<typeof verificationProofWebhookSchema>
@@ -367,7 +382,7 @@ export type RefundFee = z.infer<typeof refundFeeSchema>
 
 export const refundOrderItemSchema = z.object({
     refund_items: z.array(refundItemSchema).describe('See the refund item array object.'),
-    party_at_fault: z.enum(['UBER', 'PARTNER']).describe('“UBER” or “PARTNER”.'),
+    party_at_fault: z.enum(['UBER', 'PARTNER']).describe('UBER or PARTNER.'),
     partner_refund_amount: z.number().describe('The monetary value of items that the partner is liable towards their customers in cents.'),
     uber_refund_amount: z.number().describe('The monetary value of items that Uber will adjust on the billing details report & invoice in cents.'),
     reason: z.string().describe('A predefined string of refund reason.'),
@@ -413,7 +428,7 @@ export type WaypointWebhookInfo = z.infer<typeof waypointInfoWebookSchema>
 
 export const refundDataSchema = z.object({
     id: z.string().describe('Unique identifier of the refund request.'),
-    created_at: z.number().describe('UTC Time i.e. 2023-03-15T04:14:15Z.'),
+    created_at: z.string().datetime().describe('UTC Time i.e. 2023-03-15T04:14:15Z.'),
     currency_code: z.string().describe('Three-letter ISO currency code, in uppercase i.e. USD.'),
     total_partner_refund: z.number().describe('Total monetary amount that the partner is liable to their customers for in cents i.e. 1234.'),
     total_uber_refund: z.number().describe('Total monetary amount that Uber will adjust on the billing details report & invoice in cents i.e. 1834.'),

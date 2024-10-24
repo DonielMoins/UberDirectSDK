@@ -1,5 +1,41 @@
 # uber-direct-sdk
 
+## 1.6.9
+
+### Patch Changes
+
+- seperate into barcodeScanRequirement and barcodeRequirement
+
+## 1.6.8
+
+### Patch Changes
+
+- Remove optional off of scan result schema
+
+## 1.6.7
+
+### Patch Changes
+
+- Fix FAILURE to FAILED
+
+## 1.6.6
+
+### Patch Changes
+
+- Add Invalid to scan result schema
+
+## 1.6.5
+
+### Patch Changes
+
+- Add scan resukt
+
+## 1.6.4
+
+### Patch Changes
+
+- added datetime
+
 ## 1.6.3
 
 ### Patch Changes
