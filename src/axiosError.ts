@@ -49,7 +49,7 @@ ${requestData}`
         if (error.response.data) {
             responseData = `
 Response Data -
-${indent(json(error.response.data))}`
+${indent(json(error.response.data as JsonValue))}`
         }
 
         responseMessage = `
