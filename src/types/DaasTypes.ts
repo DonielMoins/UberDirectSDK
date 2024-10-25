@@ -77,8 +77,8 @@ export type DeliverableAction = z.infer<typeof deliverableActionSchema>
 
 export const signatureRequirementSchema = z.object({
     enabled: z.boolean().describe('Flag for if a signature is required at this waypoint.'),
-    collect_signer_name: z.boolean().optional().describe('Flag for if the signer’s name is required at this waypoint.'),
-    collect_signer_relationship: z.boolean().optional().describe('Flag for if the signer’s relationship to the intended recipient is required at this waypoint.'),
+    collect_signer_name: z.boolean().describe('Flag for if the signer’s name is required at this waypoint.'),
+    collect_signer_relationship: z.boolean().describe('Flag for if the signer’s relationship to the intended recipient is required at this waypoint.'),
 })
 
 export type SignatureRequirement = z.infer<typeof signatureRequirementSchema>
@@ -92,14 +92,14 @@ export type ScanResult = z.infer<typeof scanResultSchema>
 
 export const barcodeScanRequirementSchema = z.object({
     value: z.string().describe('String value encoded in the barcode.'),
-    type: z.string().describe('Type of barcode. Valid values: “CODE39”, “CODE39_FULL_ASCII”, “CODE128”, “QR”.'),
+    type: z.enum(["CODE39", "CODE39_FULL_ASCII", "CODE128", "QR"]).describe('Type of barcode. Valid values: “CODE39”, “CODE39_FULL_ASCII”, “CODE128”, “QR”.'),
     scan_result: scanResultSchema.describe('The result of the scan.'),
 })
 export type BarcodeScanRequirement = z.infer<typeof barcodeScanRequirementSchema>
 
 export const barcodeRequirementSchema = z.object({
     value: z.string().describe('String value encoded in the barcode.'),
-    type: z.string().describe('Type of barcode. Valid values: “CODE39”, “CODE39_FULL_ASCII”, “CODE128”, “QR”.'),
+    type: z.enum(["CODE39", "CODE39_FULL_ASCII", "CODE128", "QR"]).describe('Type of barcode. Valid values: “CODE39”, “CODE39_FULL_ASCII”, “CODE128”, “QR”.'),
     scan_result: scanResultSchema.describe('The result of the scan.'),
 })
 export type BarcodeRequirement = z.infer<typeof barcodeRequirementSchema>
@@ -117,7 +117,8 @@ export const packageRequirementSchema = z.object({
 export type PackageRequirement = z.infer<typeof packageRequirementSchema>
 
 export const identificationRequirementSchema = z.object({
-    min_age: z.number().optional().describe('Minimum age that must be verified for this delivery.'),
+    min_age: z.number().describe('Minimum age that must be verified for this delivery.'),
+    no_sobriety_check: z.boolean().describe('Flag for if no sobriety check is required at this waypoint.'),
 })
 export type IdentificationRequirement = z.infer<typeof identificationRequirementSchema>
 
@@ -169,7 +170,7 @@ export const pictureProofSchema = z.object({
 export type PictureProof = z.infer<typeof pictureProofSchema>
 
 export const identificationProofSchema = z.object({
-    min_age_verified: z.boolean().optional().describe('Flag if ID was successfully verified/scanned.'),
+    min_age_verified: z.boolean().describe('Flag if ID was successfully verified/scanned.'),
 })
 
 export type IdentificationProof = z.infer<typeof identificationProofSchema>
@@ -181,12 +182,13 @@ export const pincodeProofSchema = z.object({
 export type PincodeProof = z.infer<typeof pincodeProofSchema>
 
 export const verificationRequirementSchema = z.object({
-    signature_requirement: signatureRequirementSchema.optional().describe('Signature requirement spec to indicate that a signature must be collected at this waypoint.'),
-    barcodes: z.array(barcodeRequirementSchema).nullable().optional().describe('Barcode values/types that must be scanned at the waypoint. Number of elements in the array is equal to the number of barcodes that must be scanned.'),
-    pincode: pincodeRequirementSchema.optional().describe('Pincode requirement spec to indicate a delivery requires pincode confirmation upon delivery.'),
-    package: packageRequirementSchema.optional().describe('Package verifications required for this waypoint.'),
-    identification: identificationRequirementSchema.optional().describe('Identification scanning/verification requirements for this waypoint.'),
-    picture: z.boolean().optional().describe('Flag for if a picture is required at this waypoint.'),
+    signature: z.boolean().describe('Flag for if a signature is required at this waypoint.'),
+    signature_requirement: signatureRequirementSchema.describe('Signature requirement spec to indicate that a signature must be collected at this waypoint.'),
+    barcodes: z.array(barcodeRequirementSchema).nullable().describe('Barcode values/types that must be scanned at the waypoint. Number of elements in the array is equal to the number of barcodes that must be scanned.'),
+    pincode: pincodeRequirementSchema.describe('Pincode requirement spec to indicate a delivery requires pincode confirmation upon delivery.'),
+    package: packageRequirementSchema.describe('Package verifications required for this waypoint.'),
+    identification: identificationRequirementSchema.describe('Identification scanning/verification requirements for this waypoint.'),
+    picture: z.boolean().describe('Flag for if a picture is required at this waypoint.'),
 })
 
 export type VerificationRequirement = z.infer<typeof verificationRequirementSchema>

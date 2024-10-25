@@ -1,5 +1,35 @@
 # uber-direct-sdk
 
+## 1.6.14
+
+### Patch Changes
+
+- type
+
+## 1.6.13
+
+### Patch Changes
+
+- remove optional off of sig requirment
+
+## 1.6.12
+
+### Patch Changes
+
+- added signature and removed optional options verificationrequirmentschema
+
+## 1.6.11
+
+### Patch Changes
+
+- remove optional off of idproof min age required
+
+## 1.6.10
+
+### Patch Changes
+
+- changed webhook schema
+
 ## 1.6.9
 
 ### Patch Changes
